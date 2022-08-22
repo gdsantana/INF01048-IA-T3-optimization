@@ -1,3 +1,6 @@
+from random import random
+
+
 def evaluate(individual):
     """
     Recebe um indivíduo (lista de inteiros) e retorna o número de ataques
@@ -7,7 +10,19 @@ def evaluate(individual):
     :param individual:list
     :return:int numero de ataques entre rainhas no individuo recebido
     """
-    raise NotImplementedError  # substituir pelo seu codigo
+    attacks = 0
+    for i in range(8):
+        for j in range(i+1,8):
+            #mesma linha
+            if individual[i]==individual[j]:
+                attacks+=1
+            #diagonal pra cima
+            if individual[i]==individual[j] + (j-i):
+                attacks+=1
+            #diagonal pra baixo
+            if individual[i]==individual[j] - (j-i):
+                attacks+=1
+    return attacks
 
 
 def tournament(participants):
@@ -17,24 +32,15 @@ def tournament(participants):
     :param participants:list - lista de individuos
     :return:list melhor individuo da lista recebida
     """
-    raise NotImplementedError  # substituir pelo seu codigo
+    conflitos = [evaluate(tentativa) for tentativa in participants]
+    i = conflitos.index(min(conflitos))
+    return participants[i]
 
 
 def crossover(parent1, parent2, index):
-    """
-    Realiza o crossover de um ponto: recebe dois indivíduos e o ponto de
-    cruzamento (indice) a partir do qual os genes serão trocados. Retorna os
-    dois indivíduos com o material genético trocado.
-    Por exemplo, a chamada: crossover([2,4,7,4,8,5,5,2], [3,2,7,5,2,4,1,1], 3)
-    deve retornar [2,4,7,5,2,4,1,1], [3,2,7,4,8,5,5,2].
-    A ordem dos dois indivíduos retornados não é importante
-    (o retorno [3,2,7,4,8,5,5,2], [2,4,7,5,2,4,1,1] também está correto).
-    :param parent1:list
-    :param parent2:list
-    :param index:int
-    :return:list,list
-    """
-    raise NotImplementedError  # substituir pelo seu codigo
+    cross1 = parent1[:index] + parent2[index:]
+    cross2 = parent2[:index] + parent1[index:]
+    return cross1, cross2
 
 
 def mutate(individual, m):
@@ -46,7 +52,11 @@ def mutate(individual, m):
     :param m:int - probabilidade de mutacao
     :return:list - individuo apos mutacao (ou intacto, caso a prob. de mutacao nao seja satisfeita)
     """
-    raise NotImplementedError  # substituir pelo seu codigo
+    if random.random() < m:
+        pos = random.randint(0,7)
+        num = random.randint(1,8)
+        individual[pos] = num
+    return individual
 
 
 def run_ga(g, n, k, m, e):
