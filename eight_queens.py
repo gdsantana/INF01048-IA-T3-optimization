@@ -1,5 +1,7 @@
-from random import random
-
+from os import popen
+import random
+from select import select
+import matplotlib.pyplot as graph_plot
 
 def evaluate(individual):
     """
@@ -58,6 +60,24 @@ def mutate(individual, m):
         individual[pos] = num
     return individual
 
+def selection(pop, k):
+    popRand = []
+    for x in range(k):
+        popRand.append(pop[random.randint(0,len(pop)-1)])
+    chosen1 = tournament(popRand)
+    popRand.remove(chosen1)
+    chosen2 = tournament(popRand)
+
+    return chosen1, chosen2
+
+def get_values(pop):
+    all = map(evaluate, pop)
+    all = list(all)
+    highest = max(all)
+    lowest = min(all)
+    average = sum(all)/len(all)
+
+    return highest, lowest, average
 
 def run_ga(g, n, k, m, e):
     """
@@ -69,4 +89,50 @@ def run_ga(g, n, k, m, e):
     :param e:bool - se vai haver elitismo
     :return:list - melhor individuo encontrado
     """
-    raise NotImplementedError  # substituir pelo seu codigo
+    pop = []
+    graph = []
+    
+    for x in range(n):
+        indiv = []
+        for y in range(8):
+            indiv.append(random.randint(1,8))
+        pop.append(indiv)
+
+    graph.append(get_values(pop))
+
+    for x in range(g):
+        popNext = []
+        if e:
+            popNext.append(tournament(pop))
+        while len(popNext) < n:
+            p1, p2 = selection(pop,k)
+            o1, o2 = crossover(p1,p2,random.randint(1,8))
+            o1 = mutate(o1,m)
+            o2 = mutate(o2,m)
+            popNext.append(o1)
+            popNext.append(o2)
+        pop = popNext
+        graph.append(get_values(pop))
+
+    highest_values = list(map(lambda x: x[0], graph))
+    lowest_values = list(map(lambda x: x[1], graph))
+    average_values = list(map(lambda x: x[2], graph))
+
+    y = []
+    for x in range(0, g+1):
+        y.append(x)
+    
+    png, what = graph_plot.subplots()
+    what.set_xlabel("Generations")
+    what.set_ylabel("Fitness")
+    what.set_xlim(0, g)
+    what.set_ylim(0, 40)
+    what.plot(y, highest_values, label="Min Fitness")
+    what.plot(y, lowest_values, label="Max Fitness")
+    what.plot(y, average_values, label="Avgerage Fit")
+    what.legend()
+    what.grid()
+    png.savefig("plot.png")
+
+
+    return tournament(pop)

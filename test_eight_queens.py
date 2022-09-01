@@ -67,11 +67,12 @@ class TestEightQueens(unittest.TestCase):
         """
         response = timer.timeout(
             eight_queens.run_ga,
-            args=(100, 40, 2, 0.3, True),
+            args=(50, 50, 5, 0.4, True),
             time_limit=60, default='timeout'
         )
         if response == 'timeout':
             self.fail("run_ga ran out of time")
+
 
 
 if __name__ == '__main__':
