@@ -7,14 +7,17 @@
 - Guilherme Santana | 00301388 | Turma A
 
 ## Eight Queens
-Valores:
-- g = 
-- n = 
-- k =
-- m = 
-- e = 
+Valores que resultam na execução:
+- g = 50
+- n = 50
+- k = 5
+- m = 0.4
+- e = True
 
-Para rodar e gerar o gráfico plot.png 
+
+Esses valores foram gerados testando e verificando a consistência de resultados ideias
+
+Para rodar e gerar o gráfico plot.png:
 
 ```bash
   python3 test_eigth_queens.py
@@ -28,3 +31,8 @@ Os valores que resultam a melhor execução da regressão linear são:
 - alpha = 0.011
 - num_iterations = 800
 - Melhor erro quadrático médio = 8.528542049007212
+
+
+### Bibliotecas Utilizadas
+- Matplotlib
+- Random 
