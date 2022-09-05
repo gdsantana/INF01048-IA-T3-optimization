@@ -13,13 +13,18 @@ Valores:
 - k =
 - m = 
 - e = 
+
 Para rodar e gerar o gráfico plot.png 
-  <python3 test_eigth_queens.py>
+
+```bash
+  python3 test_eigth_queens.py
+```
+
 
 ## Alegrete
 Os valores que resultam a melhor execução da regressão linear são:
-- theta_0 = 
-- theta_1 = 
+- theta_0 = 0
+- theta_1 = 0
 - alpha = 0.011
 - num_iterations = 800
 - Melhor erro quadrático médio = 8.528542049007212
